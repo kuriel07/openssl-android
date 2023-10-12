@@ -17,17 +17,21 @@
 # _ANDROID_NDK="android-ndk-r8e"
 _ANDROID_NDK="android-ndk-r21e"
 # _ANDROID_NDK="android-ndk-r10"
+#_ANDROID_NDK="android-ndk-r26"
 
 # Set _ANDROID_EABI to the EABI you want to use. You can find the
 # list in $ANDROID_NDK_ROOT/toolchains. This value is always used.
 # _ANDROID_EABI="x86-4.6"
 # _ANDROID_EABI="arm-linux-androideabi-4.6"
-_ANDROID_EABI="arm-linux-androideabi-4.9"
+_ANDROID_EABI="aarch64-linux-androideabi-4.6"
+#_ANDROID_EABI="arm-linux-androideabi-4.9"
+#_ANDROID_EABI="arm-linux-androideabi-4.9"
 
 # Set _ANDROID_ARCH to the architecture you are building for.
 # This value is always used.
 # _ANDROID_ARCH=arch-x86
-_ANDROID_ARCH=arch-arm
+#_ANDROID_ARCH=arch-arm
+_ANDROID_ARCH=arch-arm64
 
 # Set _ANDROID_API to the API you want to use. You should set it
 # to one of: android-14, android-9, android-8, android-14, android-5
@@ -150,8 +154,9 @@ fi
 # For the Android SYSROOT. Can be used on the command line with --sysroot
 # https://android.googlesource.com/platform/ndk/+/ics-mr0/docs/STANDALONE-TOOLCHAIN.html
 export ANDROID_SYSROOT="$ANDROID_NDK_ROOT/platforms/$_ANDROID_API/$_ANDROID_ARCH"
-export CROSS_SYSROOT="$ANDROID_SYSROOT"
-export NDK_SYSROOT="$ANDROID_SYSROOT"
+#export ANDROID_SYSROOT=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/sysroot
+export CROSS_SYSROOT=$ANDROID_SYSROOT
+export NDK_SYSROOT=$ANDROID_SYSROOT
 
 # Error checking
 if [ -z "$ANDROID_SYSROOT" ] || [ ! -d "$ANDROID_SYSROOT" ]; then
@@ -192,11 +197,15 @@ fi
 #####################################################################
 
 # Most of these should be OK (MACHINE, SYSTEM, ARCH). RELEASE is ignored.
-export MACHINE=armv7
+#export MACHINE=armv7
+export MACHINE=armv8
 export RELEASE=2.6.37
 export SYSTEM=android
-export ARCH=arm
-export CROSS_COMPILE="arm-linux-androideabi-"
+#export ARCH=arm
+export ARCH=arm64
+#export CROSS_COMPILE="arm-linux-androideabi-"
+export CROSS_COMPILE="aarch64-linux-androideabi-"
+#export CROSS_COMPILE="aarch64-linux-android$_ANDROID_API_VER-"
 
 if [ "$_ANDROID_ARCH" == "arch-x86" ]; then
 	export MACHINE=i686
@@ -209,6 +218,7 @@ fi
 # For the Android toolchain
 # https://android.googlesource.com/platform/ndk/+/ics-mr0/docs/STANDALONE-TOOLCHAIN.html
 export ANDROID_SYSROOT="$ANDROID_NDK_ROOT/platforms/$_ANDROID_API/$_ANDROID_ARCH"
+#export ANDROID_SYSROOT=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/sysroot
 export SYSROOT="$ANDROID_SYSROOT"
 export NDK_SYSROOT="$ANDROID_SYSROOT"
 export ANDROID_NDK_SYSROOT="$ANDROID_SYSROOT"
@@ -217,6 +227,7 @@ export ANDROID_API="$_ANDROID_API"
 # CROSS_COMPILE and ANDROID_DEV are DFW (Don't Fiddle With). Its used by OpenSSL build system.
 # export CROSS_COMPILE="arm-linux-androideabi-"
 export ANDROID_DEV="$ANDROID_NDK_ROOT/platforms/$_ANDROID_API/$_ANDROID_ARCH/usr"
+#export ANDROID_DEV=$ANDROID_NDK_ROOT/toolchains/llvm/prebuilt/linux-x86_64/sysroot
 export HOSTCC=clang
 
 VERBOSE=1
